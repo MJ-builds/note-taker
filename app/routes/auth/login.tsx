@@ -1,4 +1,6 @@
+import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/home";
+import { useActionData } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -6,8 +8,14 @@ export function meta({}: Route.MetaArgs) {
     { name: "description", content: "Welcome to the login page!" },
   ];
 }
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const email = formData.get("email2");
+  return { email };
+}
 
 export default function Login() {
+  const data = useActionData();
   return (
     <div className="border border-neutral-200 flex flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white rounded-xl">
       <div className="">
@@ -22,7 +30,7 @@ export default function Login() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
+        <form method="POST" className="space-y-6">
           <div>
             <label
               htmlFor="email"
@@ -39,6 +47,13 @@ export default function Login() {
                 autoComplete="email"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
+              <Input
+                className="bg-orange-500"
+                id="email2"
+                name="email2"
+                type="email"
+              />
+              <div>{data ? data.email : ""}</div>
             </div>
           </div>
 
